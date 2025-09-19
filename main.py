@@ -1,16 +1,15 @@
+from pathlib import Path
+import os
 from dotenv import load_dotenv
-from langchain_core.prompts import PromptTemplate
-from dotenv import load_dotenv
-load_dotenv()
-
-from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate
 from langchain_ollama import ChatOllama
+from langchain_core.output_parsers import JsonOutputParser
 
 load_dotenv()
-
 
 def main():
     print("Hello from langchain-course!")
+
     information = """
     Elon Reeve Musk FRS (/ˈiːlɒn/ EE-lon; born June 28, 1971) is a businessman, known for his leadership of Tesla, SpaceX, X (formerly Twitter), and the Department of Government Efficiency (DOGE). Musk has been the wealthiest person in the world since 2021; as of May 2025, Forbes estimates his net worth to be US$424.7 billion.
 
@@ -23,22 +22,34 @@ Musk was the largest donor in the 2024 U.S. presidential election, and is a supp
 Musk's political activities, views, and statements have made him a polarizing figure, especially following the COVID-19 pandemic. He has been criticized for making unscientific and misleading statements, including COVID-19 misinformation and promoting conspiracy theories, and affirming antisemitic, racist, and transphobic comments. His acquisition of Twitter was controversial due to a subsequent increase in hate speech and the spread of misinformation on the service. His role in the second Trump administration attracted public backlash, particularly in response to DOGE.
     """
 
-    summary_template = """
-    given the information {information} about a person I want you to create:
-    1. A short summary
-    2. two interesting facts about them
-    """
+    prompt = ChatPromptTemplate.from_messages([
+        ("system",
+         "You are a PRECISE assistant. Respond ONLY based on the CONTEXT.\n"
+         "If the information is not in the CONTEXT, explicitly say 'information not available in the context' and DO NOT make things up.\n"
+         "Output must be valid JSON."),
+        ("human",
+         "CONTEXT:\n```\n{information}\n```\n\n"
+         "TASK: Generate a JSON object with the fields:\n"
+         "- summary: a short string (3–4 sentences) with facts from the context.\n"
+         "- facts: an array with exactly 2 STRINGS, each containing one interesting fact from the context.\n"
+         "If something is not in the context, do not include it.")
+    ])
 
-    summary_prompt_template = PromptTemplate(
-        input_variables=["information"], template=summary_template
-    )
+    chain = prompt | ChatOllama(
+        model=os.getenv("OLLAMA_MODEL", "llama3.2:3b"),
+        temperature=0,
+        format="json",      # ask Ollama to return native JSON
+        num_predict=256,    # optional: limit max tokens
+    ) | JsonOutputParser()
 
-    llm = ChatOllama(temperature=0, model="gemma3:270m")
-    # llm = ChatOpenAI(temperature=0, model="gpt-4o")
-    chain = summary_prompt_template | llm
+    result = chain.invoke({"information": information})
 
-    response = chain.invoke(input={"information": information})
-    print(response.content)
+    # result is a validated dict
+    print("\n== Summary ==")
+    print(result.get("summary", ""))
+    print("\n== Facts ==")
+    for i, f in enumerate(result.get("facts", []), 1):
+        print(f"{i}. {f}")
 
 if __name__ == "__main__":
     main()
