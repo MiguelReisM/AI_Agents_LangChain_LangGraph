@@ -1,9 +1,6 @@
 # 🦜🔗 LangChain & LangGraph — AI Agents Portfolio  
 
-![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)  
-![LangChain](https://img.shields.io/badge/Library-LangChain-yellow.svg)  
-![LangGraph](https://img.shields.io/badge/Framework-LangGraph-purple.svg)  
-![License](https://img.shields.io/badge/License-MIT-green.svg)  
+![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)  ![LangChain](https://img.shields.io/badge/Library-LangChain-yellow.svg)  ![LangGraph](https://img.shields.io/badge/Framework-LangGraph-purple.svg)  ![License](https://img.shields.io/badge/License-MIT-green.svg)  
 
 📌 *Portfolio repository focused on building AI Agents with LangChain and LangGraph.*  
 This repo documents my hands-on journey in developing modern AI applications, from foundations to advanced RAG (Retrieval-Augmented Generation) systems.  
@@ -39,20 +36,11 @@ This repo documents my hands-on journey in developing modern AI applications, fr
 
 ---
 
-## 📈 Next Steps  
-
-- Expand this repo with *5+ additional real-world agent projects*  
-- Document each learning phase with *notebooks and commented examples*  
-- Share progress and insights on my [LinkedIn](https://www.linkedin.com/in/miguel-reis-10110b199/)  
-
----
-
 ## 🌟 Connect  
 
 If you find this repository interesting, feel free to connect:  
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/miguel-reis-10110b199/)  
-[![GitHub](https://img.shields.io/badge/GitHub-000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/MiguelReisM)  
 
 ---
 
